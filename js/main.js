@@ -459,9 +459,13 @@ function onKeyDown(evt) {
 		evt.preventDefault();
 	}
 	switch (evt.keyCode) {
+		case 65:
 		case 37:
+		case 87:
 		case 38:
+		case 68:
 		case 39:
+		case 83:
 		case 40:
 			evt.preventDefault();
 			break;
@@ -499,16 +503,16 @@ function animate() {
 
 		var hdir = 0,
 			vdir = 0;
-		if (keys_down[37]) {
+		if (keys_down[37] || keys_down[65]) {
 			hdir++;
 		}
-		if (keys_down[38]) {
+		if (keys_down[38] || keys_down[87]) {
 			vdir--;
 		}
-		if (keys_down[39]) {
+		if (keys_down[39] || keys_down[68]) {
 			hdir--;
 		}
-		if (keys_down[40]) {
+		if (keys_down[40] || keys_down[83]) {
 			vdir++;
 		}
 		if (!firststep && enemies.length > 0 && (hdir != 0 || vdir != 0)) {
