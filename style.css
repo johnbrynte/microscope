@@ -9,7 +9,7 @@ body {
 h1 {
     font-weight: normal;
     font-style: italic;
-    margin: 20px;
+    margin: 10px 0 10px 0;
     font-size: 50px;
     text-decoration: underline;
 }
@@ -34,7 +34,7 @@ a:active {
 
 #canvas-container {
     position: relative;
-    margin: 20px auto;
+    margin: 10px auto 20px auto;
     width: 500px;
     height: 500px;
     /*background: #97d4c6;*/

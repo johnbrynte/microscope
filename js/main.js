@@ -572,8 +572,8 @@ function animate() {
 					fxwin.play();
 				}
 			} else {
-				if (!mute && bubbles) {
-					bubbles.volume(1 - 0.9 * lost / enemies.length);
+				if (checklost && !mute && bubbles) {
+					bubbles.volume(1 - 0.7 * lost / enemies.length);
 				}
 			}
 			if (checklost) {
