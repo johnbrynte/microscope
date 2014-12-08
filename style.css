@@ -1,0 +1,105 @@
+body {
+    margin: 0;
+    background: #000;
+    font-family: 'IM Fell DW Pica', serif;
+    color: #fff;
+    text-align: center;
+}
+
+h1 {
+    font-weight: normal;
+    font-style: italic;
+    margin: 20px;
+    font-size: 50px;
+    text-decoration: underline;
+}
+
+p {
+    font-size: 18px;
+}
+
+a,
+a:visited,
+a:link,
+a:hover,
+a:active {
+    color: #aaa;
+}
+
+#info-text {
+    width: 500px;
+    margin: 60px auto;
+    text-align: justify;
+}
+
+#canvas-container {
+    position: relative;
+    margin: 20px auto;
+    width: 500px;
+    height: 500px;
+    /*background: #97d4c6;*/
+    background: #000;
+}
+
+#canvas-container img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+}
+
+.score-container {
+    position: absolute;
+    top: 220px;
+    width: 150px;
+    text-align: left;
+}
+
+.score-container.left {
+    left: -150px;
+}
+
+.score-container.right {
+    right: -150px;
+}
+
+.score-container.top {
+    left: 175px;
+    top: 20px;
+    text-align: center;
+}
+
+.score-container p {
+    font-size: 24px;
+    font-style: italic;
+    margin: 2px 15px;
+}
+
+#game-info {
+    opacity: 1;
+    position: absolute;
+    width: 500px;
+    text-align: center;
+    left: 0;
+    top: 200px;
+    z-index: 20;
+}
+
+#game-info p {
+    margin: 5px 0;
+    font-size: 30px;
+}
+
+#game-info p.time {
+    color: #8C5555;
+    font-size: 50px;
+    margin: 0;
+}
+
+#game-info p.mini {
+    color: #fff;
+    font-size: 14px;
+    margin: 0;
+}

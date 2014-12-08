@@ -1,0 +1,131 @@
+<!DOCTYPE>
+<html>
+<head>
+    <title>Microscope</title>
+    <link href='http://fonts.googleapis.com/css?family=IM+Fell+DW+Pica:400,400italic' rel='stylesheet' type='text/css'>
+    <link href="style.css" rel="stylesheet" />
+    <script type="x-shader/x-vertex" id="v-shader-tint">
+    varying vec2 vuv;
+    
+    void main(void)
+    {
+       gl_Position = vec4( position.xy, 0.0, 1.0 );
+       gl_Position = sign( gl_Position );
+       vuv = (vec2( gl_Position.x, gl_Position.y ) + vec2( 1.0 ) ) / vec2( 2.0 );
+    }
+    </script>
+    <script type="x-shader/x-vertex" id="f-shader-tint">
+    uniform sampler2D tDiffuse;
+    uniform float tint;
+
+    varying vec2 vuv;
+
+    vec4 red = vec4(255.0,0.0,0.0,1.0);
+     
+    void main(void)
+    {
+        vec4 color = texture2D(tDiffuse,vuv);
+
+        vec2 dir = 0.5 - vuv; 
+     
+        float dist = sqrt(dir.x*dir.x + dir.y*dir.y); 
+
+        gl_FragColor = mix(color, red, tint*tint*(0.1+dist*dist));
+    } 
+    </script>
+    <script type="x-shader/x-vertex" id="v-shader-radial">
+    varying vec2 vuv;
+    // this vertex shader is from AMD RenderMonkey
+    void main(void)
+    {
+       gl_Position = vec4( position.xy, 0.0, 1.0 );
+       gl_Position = sign( gl_Position );
+       
+       // Texture coordinate for screen aligned (in correct range):
+       vuv = (vec2( gl_Position.x, gl_Position.y ) + vec2( 1.0 ) ) / vec2( 2.0 );
+    }
+    </script>
+    <script type="x-shader/x-vertex" id="f-shader-radial">
+    // This texture should hold the image to blur.
+    // This can perhaps be a previous rendered scene.
+    uniform sampler2D tDiffuse;
+     
+    // texture coordinates passed from the vertex shader
+    varying vec2 vuv;
+     
+    // some const, tweak for best look
+    const float sampleDist = 1.0;
+    const float sampleStrength = 4.2; 
+     
+    void main(void)
+    {
+       // some sample positions
+       float samples[10];//(-0.08,-0.05,-0.03,-0.02,-0.01,0.01,0.02,0.03,0.05,0.08);
+     
+        // 0.5,0.5 is the center of the screen
+        // so substracting uv from it will result in
+        // a vector pointing to the middle of the screen
+        vec2 dir = 0.5 - vuv; 
+     
+        // calculate the distance to the center of the screen
+        float dist = sqrt(dir.x*dir.x + dir.y*dir.y); 
+     
+        // normalize the direction (reuse the distance)
+        dir = dir/dist; 
+     
+        // this is the original colour of this fragment
+        // using only this would result in a nonblurred version
+        vec4 color = texture2D(tDiffuse,vuv); 
+     
+        vec4 sum = color;
+     
+        // take 10 additional blur samples in the direction towards
+        // the center of the screen
+        for (int i = 0; i < 10; i++)
+        {
+          //sum += texture2D( tDiffuse, vuv + dir * samples[i] * sampleDist );
+          sum += texture2D( tDiffuse, vuv + dir * ((5.0-float(i))/300.0) * sampleDist );
+        }
+     
+        // we have taken eleven samples
+        sum *= 1.0/11.0;
+     
+        // weighten the blur effect with the distance to the
+        // center of the screen ( further out is blurred more)
+        float t = dist*dist * sampleStrength;
+        t = clamp( t ,0.0,0.7); //0 &lt;= t &lt;= 1
+
+        color.a = t;
+     
+        //Blend the original color with the averaged pixels
+        gl_FragColor = mix( color, sum, t );
+    } 
+    </script>
+    <script src="js/lib/SeamlessLoop.js"></script>
+    <script src="js/lib/three.min.js"></script>
+    <script src="js/RadialBlurShader.js"></script>
+    <script src="js/TintShader.js"></script>
+    <script src="js/lib/shaders/CopyShader.js"></script>
+    <script src="js/lib/postprocessing/MaskPass.js"></script>
+    <script src="js/lib/postprocessing/RenderPass.js"></script>
+    <script src="js/lib/postprocessing/ShaderPass.js"></script>
+    <script src="js/lib/postprocessing/EffectComposer.js"></script>
+    <script src="js/Sprite.js"></script>
+    <script src="js/ass.js"></script>
+<body>
+<h1>Microscope</h1>
+<div id="canvas-container">
+    <div class="score-container top">
+        <p id="score-remaining"></p>
+    </div>
+    <div id="game-info"><p>Loading...</p></div>
+    <img src="img/microscope_border.png" />
+</div>
+<div id="info-text">
+    <p><i>Microscope</i> is a game created by John Turesson as a submission for the game competition <a href="http://ludumdare.com/compo/">Ludum Dare</a> #31 in 2014.</p>
+    <p>The source to the game can be downloaded from <a href="link">here</a>.</p>
+    <p>Credit goes to <a href="http://www.gamerendering.com/2008/12/20/radial-blur-filter/">gamerendering.com</a> for the radial blur shader, <a href="https://github.com/Hivenfour/SeamlessLoop">Hivenfour</a> for the SeamlessLoop JavaScript audio player, <a href="https://github.com/mrdoob">Mr.Doob</a> for the three.js JavaScript renderer, <a href="http://www.flipcode.com/archives/Fast_Approximate_Distance_Functions.shtml">flipcode.com</a> for the distance approximation algorithm and <a href="http://freesound.org/people/Huminaatio/">Huminaatio</a>, <a href="http://freesound.org/people/chrisw92/">chrisw92</a>, <a href="http://freesound.org/people/Isaac200000/">Isaac200000</a>, <a href="http://freesound.org/people/MikeRat/">MikeRat</a> and <a href="http://freesound.org/people/Electroviolence/">Electroviolence</a> for sound effects from <a href="http://freesound.org/">freesound.org</a>.</p>
+</div>
+<script src="js/main.js"></script>
+</body>
+</html>
