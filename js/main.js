@@ -551,7 +551,7 @@ function animate() {
 				}
 				if (checklost) {
 					d = accurate_distance(enemies[i].x - width / 2, enemies[i].y - height / 2);
-					if (d > width / 2 + enemies[i].size / 2 - 15) {
+					if (d > width / 2 + enemies[i].size / 2 - 25) {
 						lost++;
 					}
 				}
