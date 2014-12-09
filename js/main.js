@@ -40,7 +40,8 @@ function getTimeString(t) {
 	return (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
 }
 
-var mute = true;
+var mute = false;
+var mutefx = true;
 
 var width = 500,
 	height = 500;
@@ -56,7 +57,9 @@ var movelimit = true;
 var background = new SeamlessLoop();
 background.addUri('assets/microscopic.mp3', 66998, 'background');
 background.callback(function() {
-	background.start('background');
+	if (!mute) {
+		background.start('background');
+	}
 });
 var bubbles = new SeamlessLoop();
 bubbles.addUri('assets/bubbles.mp3', 23745, 'bubbles');
@@ -277,12 +280,12 @@ var player = (function() {
 						gameinfo.innerHTML = "<p>Lost...</p><p class='mini'>Press \"R\" to restart</p>";
 					}
 					self.lost = true;
-					if (!mute) {
+					if (!mutefx) {
 						fxlost.play();
 					}
 				} else {
 					if (!self.losing) {
-						if (!mute) {
+						if (!mutefx) {
 							fxlosing.play();
 						}
 						self.losing = true;
@@ -566,7 +569,7 @@ function animate() {
 				tgameinfo = 1;
 				gameinfo.innerHTML = "<p>Uncontaminated!</p><p class='mini'>Press \"R\" to restart</p><p class='time'>" + getTimeString(time) + "</p>";
 				gamewon = true;
-				if (!mute) {
+				if (!mutefx) {
 					fxwin.play();
 				}
 			} else {
