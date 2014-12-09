@@ -40,7 +40,7 @@ function getTimeString(t) {
 	return (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
 }
 
-var mute = false;
+var mute = true;
 
 var width = 500,
 	height = 500;
@@ -56,9 +56,7 @@ var movelimit = true;
 var background = new SeamlessLoop();
 background.addUri('assets/microscopic.mp3', 66998, 'background');
 background.callback(function() {
-	if (!mute) {
-		background.start('background');
-	}
+	background.start('background');
 });
 var bubbles = new SeamlessLoop();
 bubbles.addUri('assets/bubbles.mp3', 23745, 'bubbles');
